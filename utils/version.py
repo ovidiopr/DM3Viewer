@@ -23,7 +23,7 @@ __name__ = 'DM3Viewer'
 __mod__ = 'viewdm3'
 __version__ = '0.1.0'
 __date__ = '2018/02/05'
-__title__ = 'Simple Qt4 application to view DM3 files'
+__title__ = 'Simple PyQt application to view and export DM3 files'
 __description__ = """Software package for viewing and exporting DM3 files.
 DM3Viewer is a software package for viewing and exporting
 DM3 files. It exports the data as text or the images to
