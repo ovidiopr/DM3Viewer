@@ -5,6 +5,9 @@
 #     This file is part of DM3Viewer, a simple PyQt application to
 #      view DM3 files.
 #
+#  Copyright (c) 2006,2007,2009,2010,2012-2015 Stephane Larouche.
+#
+#  Several modifications, done to make it work with DM3Viewer
 #  Copyright (C) 2018 Ovidio Peña Rodríguez <ovidio@bytesfall.com>
 #
 #  This program is free software: you can redistribute it and/or modify
