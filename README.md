@@ -24,13 +24,15 @@ For this reason I have created DM3Viewer and publish it in the hope that it can 
 Credits
 -------
 
-The script that parses .dm3 files in DM3Viewer is based on the script [Python DM3 Reader](http://imagejdocu.tudor.lu/doku.php?id=plugin:utilities:python_dm3_reader:start),
+The script that parses .dm3 files in DM3Viewer is based on [Python DM3 Reader](http://imagejdocu.tudor.lu/doku.php?id=plugin:utilities:python_dm3_reader:start),
 developed by [Pierre-Ivan Raynal](http://microscopies.med.univ-tours.fr/). Python DM3 Reader, in turn, is based on the [DM3_Reader plug-in](https://imagej.nih.gov/ij/plugins/DM3_Reader.html)
 for [ImageJ](https://imagej.nih.gov/ij/) that was developed by [Greg Jefferis](https://www2.mrc-lmb.cam.ac.uk/group-leaders/h-to-m/gregory-jefferis/).
 In addition, I have also taken a peek at the MatLab script [DM3Import](https://es.mathworks.com/matlabcentral/fileexchange/29351-dm3-import-for-gatan-digital-micrograph)
-(borrowing the example DM3 files) and heavily used the excellent information available here:
+(borrowing the example DM3 files) and heavily consulted the excellent information available here:
  - [http://www.er-c.org/cbb/info/dmformat/](http://www.er-c.org/cbb/info/dmformat/)
  - [https://imagej.nih.gov/ij/plugins/DM3Format.gj.html](https://imagej.nih.gov/ij/plugins/DM3Format.gj.html)
+
+Finally, the scripts for producing the Windows installer are borrowed from [OpenFilters](http://larfis.polymtl.ca/index.php/en/links/openfilters).
 
 Requirements
 ============
@@ -51,11 +53,11 @@ Linux:
 
 Windows:
 --------
- - Run Install_DM3Viewer_0.1.0.exe.
+ - Run the installer and follow the instructions.
 
 All:
 ----
- - You can also use Python to execute the file DM3Viewer.py contained in sources. In that case, you need to satisfy all the requirements listed above.
+ - You can also use Python to execute the file viewdm3.py contained in sources. In that case, you need to satisfy all the requirements listed above.
 
 License
 -------
