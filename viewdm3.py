@@ -3,7 +3,7 @@
 #
 #  viewdm3.py  --- Main file
 #     This file is part of DM3Viewer, a simple PyQt application to
-#      view DM3 files.
+#      view and export DM3 files.
 #
 #  Copyright (C) 2018 Ovidio Peña Rodríguez <ovidio@bytesfall.com>
 #

@@ -27,10 +27,27 @@ for [ImageJ](https://imagej.nih.gov/ij/) that was developed by Greg Jefferis. I 
 Requirements
 ============
 
+ - Python (>=2.7)
  - Numpy (>=1.0.3)
  - Scipy (>=0.5.2)
+ - Qt (>=4.2.3)
  - PyQt (>=4.2.3)
  - Matplotlib (>=1.5.0)
+
+Installation
+============
+
+Linux:
+------
+ - Select the appropiate file (.deb or .rpm) and install using the package manager of your distribution.
+
+Windows:
+--------
+ - Run Install_DM3Viewer_0.1.0.exe.
+
+All:
+----
+ - You can also use Python to execute the file DM3Viewer.py contained in sources. In that case, you need to satisfy all the requirements listed above.
 
 License
 -------

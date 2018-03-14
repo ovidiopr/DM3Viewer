@@ -36,7 +36,7 @@ setup(name = __mod__,
       license = 'GPL',
       platforms = 'any',
       packages = [".", "utils"],
-      data_files = [(".", ["README.txt", "DM3Viewer.ui", "DM3Viewer.qrc"]),
+      data_files = [(".", ["README.md", "DM3Viewer.ui", "DM3Viewer.qrc"]),
                     ("utils", ["utils/Options.ui"])],
       install_requires = ['Python>=2.5', 'Numpy>=1.0.3', 'Scipy>=0.5.2', 'Qt>=4.2.3', 'PyQt>= 4.2.3', 'Matplotlib>=1.5.0']
 )
