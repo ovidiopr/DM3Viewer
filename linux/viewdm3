@@ -1,0 +1,2 @@
+#! /bin/sh
+`which python` /usr/share/viewdm3/viewdm3.py

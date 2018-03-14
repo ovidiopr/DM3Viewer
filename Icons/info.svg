@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="256" height="256">
+  <defs>
+    <filter id="filter1">
+      <feGaussianBlur stdDeviation="1.75" />
+    </filter>
+    <filter id="filter2">
+      <feGaussianBlur stdDeviation="0.35" />
+    </filter>
+    <linearGradient x1="162" y1="228" x2="101" y2="41" id="linearGradient1" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.95" offset="0" />
+      <stop stop-color="white" stop-opacity="0.75" offset="1" />
+    </linearGradient>
+    <linearGradient x1="169" y1="227" x2="94.5" y2="42" id="linearGradient2" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2A4FE4" stop-opacity="1" offset="0" />
+      <stop stop-color="#447BFA" stop-opacity="1" offset="0.5" />
+      <stop stop-color="#69A3FF" stop-opacity="1" offset="0.625" />
+      <stop stop-color="#89BEFF" stop-opacity="1" offset="0.75" />
+      <stop stop-color="#80BEFF" stop-opacity="1" offset="1" />
+    </linearGradient>
+    <linearGradient x1="123.5" y1="34.5" x2="132" y2="116" id="linearGradient3" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="1" offset="0" />
+      <stop stop-color="white" stop-opacity="0.5" offset="1" />
+    </linearGradient>
+  </defs>
+  <circle cx="130" cy="131.5" r="115.5" fill-opacity="0.17" filter="url(#filter1)" />
+  <circle cx="128" cy="128" r="107" fill="#3A73EF" />
+  <circle cx="128" cy="128" r="103" fill="url(#linearGradient1)" />
+  <circle cx="128" cy="128" r="94" fill="url(#linearGradient2)" />
+  <path d="M 123.30585,191.07575 C 129.02124,187.76374 138.24211,176.49437 141.6732,168.65732 C 141.6732,168.65732 138.1399,167.1567 138.1399,167.1567 C 131.0411,179.5796 120.02693,188.70016 123.71066,173.32458 C 123.71066,173.32458 145.45687,105.04964 145.45687,105.04964 C 139.77784,104.57639 111.00423,109.17626 106.51327,110.10356 C 106.51327,110.10356 105.79723,113.88169 105.79723,113.88169 C 115.61397,114.21756 116.94651,118.2341 116.23663,121.5238 C 116.23663,121.5238 99.927949,173.57586 99.927949,173.57586 C 99.927949,173.57586 97.881571,179.46474 97.947071,183.84902 C 98.105167,193.86006 111.11196,197.7125 123.30585,191.07575 z " fill="white" />
+  <circle cx="138" cy="76" r="14" fill="white" />
+  <path d="M 128,31.59375 C 86.871341,31.59375 51.74836,57.401715 37.90625,93.6875 C 56.732365,110.35912 96.245675,118.37197 128.03125,118.625 C 128.07285,118.62467 128.02111,118.62533 128.0625,118.625 C 160.09769,118.36974 199.12268,109.67594 217.71875,92.6875 C 203.61988,56.922098 168.75455,31.593751 128,31.59375 z " opacity="0.45" fill="url(#linearGradient3)" filter="url(#filter2)" />
+</svg>

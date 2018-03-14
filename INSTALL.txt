@@ -1,0 +1,13 @@
+DM3Viewer v. 0.1.0
+
+
+INSTALLATION
+
+Linux:
+* Select the appropiate file (.deb or .rpm) and install using the package manager of your distribution.
+
+Windows:
+* Run Install_DM3Viewer_0.1.0.exe.
+
+All:
+* You can also use Python to execute the file DM3Viewer.py contained in sources. In that case, you need to have Python 2.5 or newer, NumPy, SciPy, MatPlotLib and PyQt installed.

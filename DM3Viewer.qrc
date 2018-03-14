@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/viewer.svg</file>
+        <file>Icons/open.svg</file>
+        <file>Icons/close.svg</file>
+        <file>Icons/save.svg</file>
+        <file>Icons/save-as.svg</file>
+        <file>Icons/save_dat.svg</file>
+        <file>Icons/save_png.svg</file>
+        <file>Icons/save_jpg.svg</file>
+        <file>Icons/save_tif.svg</file>
+        <file>Icons/save_pdf.svg</file>
+        <file>Icons/quit.svg</file>
+        <file>Icons/options.svg</file>
+        <file>Icons/timer.svg</file>
+        <file>Icons/first.svg</file>
+        <file>Icons/previous.svg</file>
+        <file>Icons/next.svg</file>
+        <file>Icons/last.svg</file>
+        <file>Icons/help.svg</file>
+        <file>Icons/reload.svg</file>
+        <file>Icons/zoom.svg</file>
+        <file>Icons/info.svg</file>
+        <file>Icons/fft.svg</file>
+        <file>Icons/ifft.svg</file>
+    </qresource>
+</RCC>

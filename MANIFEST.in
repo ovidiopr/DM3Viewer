@@ -1,0 +1,13 @@
+include COPYING.txt
+include LICENSE.txt
+include INSTALL.txt
+include MANIFEST.in
+include Makefile
+include *.ui
+include *.qrc
+include utils/*.ui
+include utils/*.sh
+include Icons/*
+include debian/*
+include linux/*
+include windows/*

@@ -1,0 +1,5 @@
+viewdm3 (0.1.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Ovidio Peña Rodríguez <ovidio@bytesfall.com>  Tue, 06 Feb 2018 22:52:01 +0200
