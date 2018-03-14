@@ -9,18 +9,24 @@ DM3 files because (i) I did it for my own personal use, not to be a "professiona
 published by Gatan. Said that, if you find that it fails with a given file you can send it to me and maybe I can make it work.
 
 Version history
-===============
+---------------
 
 - Version 0.1.0 (Feb 05, 2018).
 
 Digital Micrograph file format
-==============================
+------------------------------
 
-The file format for Digital Micrograph is not published by [Gatan](http://www.gatan.com/).
+The file format for DM3 files is not published by [Gatan](http://www.gatan.com/) and Digital Micrograph is an expensive package.
+Hence, people working with TEM/SEM images have to pick between buying it (not always possible), just export the images to other formats
+(undesirable because a lot of information is lost) or find a way of reading it (a complicated task). For this reason I have created DM3Viewer
+and publish it in the hope that it can be useful to others as well.
+
+Credits
+-------
 
 The script that parses .dm3 files in DM3Viewer is based on the script [Python DM3 Reader](http://imagejdocu.tudor.lu/doku.php?id=plugin:utilities:python_dm3_reader:start),
 developed by [Pierre-Ivan Raynal](http://microscopies.med.univ-tours.fr/). Python DM3 Reader, in turn, is based on the [DM3_Reader plug-in](https://imagej.nih.gov/ij/plugins/DM3_Reader.html)
-for [ImageJ](https://imagej.nih.gov/ij/) that was developed by Greg Jefferis. I have also taken a peak at the MatLab script
+for [ImageJ](https://imagej.nih.gov/ij/) that was developed by Greg Jefferis. In addition, I have also taken a peek at the MatLab script
 [DM3Import](https://es.mathworks.com/matlabcentral/fileexchange/29351-dm3-import-for-gatan-digital-micrograph)
 and heavily used the excellent information available here:
  - [http://www.er-c.org/cbb/info/dmformat/](http://www.er-c.org/cbb/info/dmformat/)
