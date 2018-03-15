@@ -1,5 +1,5 @@
-include COPYING.txt
-include LICENSE.md
+include COPYING.TXT
+include LICENSE.TXT
 include MANIFEST.in
 include Makefile
 include *.ui
