@@ -41,3 +41,6 @@ cov-int*
 cov-int
 build*
 push-to-github.sh
+
+# PyCharm directory
+.idea
