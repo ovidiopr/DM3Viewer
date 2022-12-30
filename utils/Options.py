@@ -23,8 +23,9 @@
 #  This program is based on the example "embedding_in_qt4.py" available
 #  at http://matplotlib.org/examples/user_interfaces/embedding_in_qt4.html
 
-from PyQt5 import uic,  QtCore, QtGui, QtWidgets
 import os
+
+from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 ColorMaps = ('gray', 'hot', 'gist_earth', 'terrain', 'ocean', 'brg', 'jet', 'rainbow', 'hsv')
 ColorMapsLbl = {'gray': 'Gray',
@@ -37,44 +38,47 @@ ColorMapsLbl = {'gray': 'Gray',
                 'rainbow': 'Rainbow',
                 'hsv': 'HSV'}
 
+
 class Options(object):
     def __init__(self):
-        #variables and default values
+        # variables and default values
         self.optlist = ['workDirectory', 'timeInterval', 'zoom', 'colorMap', 'scalePos']
-        self.dfltlist = [QtCore.QDir.currentPath().encode('utf-8'), 0.0, 1.0, 'gray', 3]
+        self.dfltlist = [QtCore.QDir.currentPath(), 0.0, 1.0, 'gray', 3]
         self.reset()
 
     def reset(self):
         for opt, dflt in zip(self.optlist, self.dfltlist): setattr(self, opt, dflt)
 
+
 class OptionsDlg(QtWidgets.QDialog):
     '''Dialog containing options for DM3Viewer. The options are members of this object.'''
-    def __init__(self, parent = None):
-        super(OptionsDlg, self).__init__(parent)
-        self.ui = uic.loadUi(os.path.join(os.path.dirname(os.path.realpath(__file__)),'Options.ui'), self)
 
-        #set validators
+    def __init__(self, parent=None):
+        super(OptionsDlg, self).__init__(parent)
+        self.ui = uic.loadUi(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'Options.ui'), self)
+
+        # set validators
         self.timeIntLE.setValidator(QtGui.QDoubleValidator(self))
 
-        #connections
-        self.connect(self.workDirectoryPB, QtCore.SIGNAL("clicked()"), self.onChangeWorkDirectory)
-        self.connect(self.buttonBox, QtCore.SIGNAL("clicked(QAbstractButton *)"), self.onclicked)
+        # connections
+        self.workDirectoryPB.clicked.connect(self.onChangeWorkDirectory)
+        self.buttonBox.clicked.connect(self.onclicked)
 
-        self.connect(self.zoomHS, QtCore.SIGNAL("valueChanged(int)"), self.updateZoomLbl)
-        #self.connect(self.zoomHS, QtCore.SIGNAL("sliderMoved(int)"), self.updateZoomLbl)
+        self.zoomHS.valueChanged.connect(self.updateZoomLbl)
+        # self.zoomHS.sliderMoved.connect(self.updateZoomLbl)
 
-        #update list of color maps
+        # update list of color maps
         self.colorMapCB.clear()
         for cm in ColorMaps:
             self.colorMapCB.addItem(ColorMapsLbl[cm])
 
-        #create colormaps
+        # create colormaps
         from numpy import linspace, vstack
         import matplotlib.pyplot as plt
         from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
-        fig, axes = plt.subplots(nrows = len(ColorMaps))
-        fig.subplots_adjust(top = 0.99, bottom = 0.01, left = 0.2, right = 0.99)
+        fig, axes = plt.subplots(nrows=len(ColorMaps))
+        fig.subplots_adjust(top=0.99, bottom=0.01, left=0.2, right=0.99)
         canvas = FigureCanvas(fig)
         canvas.setParent(self.colorMapsQF)
 
@@ -82,30 +86,31 @@ class OptionsDlg(QtWidgets.QDialog):
         gradient = vstack((gradient, gradient))
 
         for ax, name in zip(axes, ColorMaps):
-            ax.imshow(gradient, aspect = 'auto', cmap = plt.get_cmap(name))
+            ax.imshow(gradient, aspect='auto', cmap=plt.get_cmap(name))
             pos = list(ax.get_position().bounds)
             x_text = pos[0] - 0.01
             y_text = pos[1] + pos[3]/2.
-            fig.text(x_text, y_text, ColorMapsLbl[name], va = 'center', ha = 'right', fontsize = 11)
+            fig.text(x_text, y_text, ColorMapsLbl[name], va='center', ha='right', fontsize=11)
 
-        #turn off all ticks & spines
+        # turn off all ticks & spines
         for ax in axes:
             ax.set_axis_off()
 
-        #define layout for colormaps
-        vlayout = QtGui.QVBoxLayout()
+        # define layout for colormaps
+        vlayout = QtWidgets.QVBoxLayout()
         vlayout.addWidget(canvas)
         self.colorMapsQF.setLayout(vlayout)
 
-        #set options
+        # set options
         self.reset()
 
     def onChangeWorkDirectory(self):
-        filename = QtGui.QFileDialog.getExistingDirectory(self, "Select working directory", self.workDirectoryLE.text())
+        filename = QtWidgets.QFileDialog.getExistingDirectory(self, "Select working directory",
+                                                              self.workDirectoryLE.text())
         if filename: self.workDirectoryLE.setText(filename)
 
     def onclicked(self, button):
-        if self.buttonBox.buttonRole(button) == QtGui.QDialogButtonBox.ResetRole:
+        if self.buttonBox.buttonRole(button) == QtWidgets.QDialogButtonBox.ResetRole:
             self.reset()
 
     def reset(self):
@@ -114,10 +119,10 @@ class OptionsDlg(QtWidgets.QDialog):
     def getOptions(self):
         '''returns an options object filled with values from the dialog'''
         options = Options()
-        #GENERAL
-        options.workDirectory = self.workDirectoryLE.text().encode('utf-8')
+        # GENERAL
+        options.workDirectory = self.workDirectoryLE.text()
         options.timeInterval = float(self.timeIntLE.text())
-        #PLOT
+        # PLOT
         options.zoom = self.getZoom(self.zoomHS.value())
         options.colorMap = ColorMaps[self.colorMapCB.currentIndex()]
         options.scalePos = self.scalePosCB.currentIndex()
@@ -126,10 +131,12 @@ class OptionsDlg(QtWidgets.QDialog):
 
     def setOptions(self, options):
         '''set dialog values from the passed options object'''
-        #GENERAL
+        # GENERAL
+        if isinstance(options.workDirectory, bytes):
+            options.workDirectory = options.workDirectory.decode('utf-8')
         self.workDirectoryLE.setText(options.workDirectory)
         self.timeIntLE.setText(str(options.timeInterval))
-        #PLOT
+        # PLOT
         self.zoomHS.setValue(self.getSliderValue(options.zoom))
         self.colorMapCB.setCurrentIndex(ColorMaps.index(options.colorMap))
         self.scalePosCB.setCurrentIndex(options.scalePos)
@@ -142,22 +149,23 @@ class OptionsDlg(QtWidgets.QDialog):
 
     def getZoom(self, value=0):
         if value >= 0:
-            return value  + 1.0
+            return value + 1.0
         else:
-            return 1.0/(abs(value)  + 1.0)
+            return 1.0/(abs(value) + 1.0)
 
     def updateZoomLbl(self, value=0):
         if value == 0:
             self.zoomLbl.setText('1:1')
         elif value > 0:
-            self.zoomLbl.setText('1:%i' % (value + 1))
-        else: # value < 0
-            self.zoomLbl.setText('%i:1' % (1 - value))
-            
+            self.zoomLbl.setText('1:%i'%(value + 1))
+        else:  # value < 0
+            self.zoomLbl.setText('%i:1'%(1 - value))
+
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
+
+    app = QtWidgets.QApplication(sys.argv)
     form = OptionsDlg(None)
     form.show()
     sys.exit(app.exec_())

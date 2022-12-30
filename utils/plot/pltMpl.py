@@ -46,6 +46,7 @@ from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 
 slider_max = 1000.0
 slider_interval = 50
+scale_values = [1, 5, 10, 20, 50, 100, 200, 500, 800, 1000]
 
 
 def save_image(fname, data, size=(1, 1), dpi=80, cmap='hot', scale_pos=3, zrange=None, scale=1.0, units='nm'):
@@ -75,6 +76,19 @@ def save_image(fname, data, size=(1, 1), dpi=80, cmap='hot', scale_pos=3, zrange
                 scale_conv = 1000.0
                 scale_value = 10**np.floor(np.log10(scale_conv*np.max(scale)/4))
                 scale_value = scale_value*np.floor(scale_conv*np.max(scale)/4/scale_value)
+        elif scale_value > 1000:
+            if scale_units == r"$\AA$":
+                scale_units = "nm"
+                scale_conv = 0.1
+                scale_value = 10**np.floor(np.log10(scale_conv*np.max(scale)/4))
+                scale_value = scale_value*np.floor(scale_conv*np.max(scale)/4/scale_value)
+            elif scale_units == "nm":
+                scale_units = u'\xb5m'
+                scale_conv = 1.0e-3
+                scale_value = 10**np.floor(np.log10(scale_conv*np.max(scale)/4))
+                scale_value = scale_value*np.floor(scale_conv*np.max(scale)/4/scale_value)
+
+        scale_value = min(scale_values, key=lambda x: abs(x - scale_value))
 
         if scale_value < 1 or np.isnan(scale_value):
             scale_units = units
@@ -576,6 +590,7 @@ class Mpl3DPlot(FigureCanvas):
                 (self._origin_z, self._scale_z, self._units_z) = (0.0, 0.0, '')
             self._switch_fft = False
 
+            #TODO: Check how to deal with complex values
             self._min_slider.setValue(round(slider_max*(self.vmin - self.zmin)/(self.zmax - self.zmin)))
             self._max_slider.setValue(round(slider_max*(self.vmax - self.zmin)/(self.zmax - self.zmin)))
 
@@ -693,6 +708,19 @@ class Mpl3DPlot(FigureCanvas):
                             scale_conv = 1000.0
                             scale_value = 10**np.floor(np.log10(scale_conv*self.size_x/4))
                             scale_value = scale_value*np.floor(scale_conv*self.size_x/4/scale_value)
+                    elif scale_value > 1000:
+                        if scale_units == r"$\AA$":
+                            scale_units = "nm"
+                            scale_conv = 0.1
+                            scale_value = 10**np.floor(np.log10(scale_conv*self.size_x/4))
+                            scale_value = scale_value*np.floor(scale_conv*self.size_x/4/scale_value)
+                        elif scale_units == "nm":
+                            scale_units = u'\xb5m'
+                            scale_conv = 1.0e-3
+                            scale_value = 10**np.floor(np.log10(scale_conv*self.size_x/4))
+                            scale_value = scale_value*np.floor(scale_conv*self.size_x/4/scale_value)
+
+                    scale_value = min(scale_values, key=lambda x: abs(x - scale_value))
 
                     if scale_value < 1 or np.isnan(scale_value):
                         scale_units = self.units_x
