@@ -4,7 +4,7 @@
 #     This file is part of DM3Viewer, a simple PyQt application to
 #      view and export DM3 files.
 #
-#  Copyright (C) 2018 Ovidio Peña Rodríguez <ovidio@bytesfall.com>
+#  Copyright (C) 2018-2023 Ovidio Peña Rodríguez <ovidio@bytesfall.com>
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 
 __name__ = 'DM3Viewer'
 __mod__ = 'viewdm3'
-__version__ = '0.1.0'
-__date__ = '2018/02/05'
+__version__ = '0.2.0'
+__date__ = '2022/12/30'
 __title__ = 'Simple PyQt application to view and export DM3 files'
 __description__ = """Software package for viewing and exporting DM3 files.
 DM3Viewer is a software package for viewing and exporting
