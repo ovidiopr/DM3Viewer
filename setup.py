@@ -21,22 +21,23 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from numpy.distutils.core import setup
+
 from utils.version import __mod__, __version__, __title__, __description__, __author__, __email__, __keywords__, __url__
 
-setup(name = __mod__,
-      version = __version__,
-      description = __title__,
-      long_description = __description__,
-      author = __author__,
-      author_email = __email__,
-      maintainer = __author__,
-      maintainer_email = __email__,
-      keywords = __keywords__,
-      url = __url__,
-      license = 'GPL',
-      platforms = 'any',
-      packages = [".", "utils"],
-      data_files = [(".", ["README.md", "DM3Viewer.ui", "DM3Viewer.qrc"]),
-                    ("utils", ["utils/Options.ui"])],
-      install_requires = ['Python>=2.5', 'Numpy>=1.0.3', 'Scipy>=0.5.2', 'Qt>=4.2.3', 'PyQt>= 4.2.3', 'Matplotlib>=1.5.0']
-)
+setup(name=__mod__,
+      version=__version__,
+      description=__title__,
+      long_description=__description__,
+      author=__author__,
+      author_email=__email__,
+      maintainer=__author__,
+      maintainer_email=__email__,
+      keywords=__keywords__,
+      url=__url__,
+      license='GPL',
+      platforms='any',
+      packages=[".", "utils"],
+      data_files=[(".", ["README.md", "DM3Viewer.ui", "DM3Viewer.qrc"]),
+                  ("utils", ["utils/Options.ui"])],
+      install_requires=['Numpy>=1.24.0', 'Scipy>=1.9.3', 'PyQt5>= 5.15.7', 'Matplotlib>=3.6.2']
+      )

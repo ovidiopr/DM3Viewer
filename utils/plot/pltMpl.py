@@ -30,15 +30,14 @@ Created on Feb 05, 2018
 
 import os
 
-from PyQt4 import QtCore, QtGui
-
-import numpy as np
-
 import matplotlib
-matplotlib.use("Qt4Agg")
-matplotlib.rcParams["backend.qt4"] = "PyQt4"
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+import numpy as np
+from PyQt5 import QtCore, QtWidgets
+
+matplotlib.use("Qt5Agg")
+# matplotlib.rcParams["backend.qt5"] = "PyQt5"
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from matplotlib.colors import Normalize
 from matplotlib.image import AxesImage
@@ -58,7 +57,7 @@ def save_image(fname, data, size=(1, 1), dpi=80, cmap='hot', scale_pos=3, zrange
     ax.set_axis_off()
     fig.add_axes(ax)
     plt.set_cmap(cmap)
-    ax.imshow(data, aspect='equal', vmin=zrange[0], vmax=zrange[1], extent = (0., scale, 0., scale))
+    ax.imshow(data, aspect='equal', vmin=zrange[0], vmax=zrange[1], extent=(0., scale, 0., scale))
 
     if 0 < scale_pos <= 10:
         scale_units = units
@@ -82,7 +81,7 @@ def save_image(fname, data, size=(1, 1), dpi=80, cmap='hot', scale_pos=3, zrange
             scale_conv = 1.0
             scale_value = 1
 
-        scalebar = AnchoredSizeBar(ax.transData, scale_value/scale_conv, '%i %s' % (scale_value, scale_units),
+        scalebar = AnchoredSizeBar(ax.transData, scale_value/scale_conv, '%i %s'%(scale_value, scale_units),
                                    loc=scale_pos, color='black', frameon=True, label_top=True,
                                    size_vertical=scale_value/scale_conv/10.0, pad=0.2, borderpad=0.5)
 
@@ -95,12 +94,12 @@ class Mpl3DPlot(FigureCanvas):
     dataChanged = QtCore.pyqtSignal()
     coordsChanged = QtCore.pyqtSignal(tuple)
 
-    def __init__(self, parent = None, width = 8.0, height = 6.0, dpi = 150, toolbar = True, cmap = 'gray', scale_pos = 3):
-        self._fig = Figure(figsize = (width, height), dpi = dpi)
+    def __init__(self, parent=None, width=8.0, height=6.0, dpi=150, toolbar=True, cmap='gray', scale_pos=3):
+        self._fig = Figure(figsize=(width, height), dpi=dpi)
         FigureCanvas.__init__(self, self._fig)
         self.setParent(parent)
 
-        self._axes = self._fig.add_subplot(111, aspect = 'auto', position=[0.0, 0.0, 1.0, 1.0])
+        self._axes = self._fig.add_subplot(111, aspect='auto', position=[0.0, 0.0, 1.0, 1.0])
 
         if toolbar:
             self._toolbar = NavigationToolbar(self, parent)
@@ -112,58 +111,58 @@ class Mpl3DPlot(FigureCanvas):
 
         self.parent = parent
         if self.parent is not None:
-            self._min_lbl = QtGui.QLabel(parent = self.parent)
+            self._min_lbl = QtWidgets.QLabel(parent=self.parent)
             self._min_lbl.setAlignment(QtCore.Qt.AlignHCenter)
             self._min_lbl.setText('{:.4g}'.format(0))
 
-            self._max_lbl = QtGui.QLabel(parent = self.parent)
+            self._max_lbl = QtWidgets.QLabel(parent=self.parent)
             self._max_lbl.setAlignment(QtCore.Qt.AlignHCenter)
             self._max_lbl.setText('{:.4g}'.format(1))
 
-            self._idx_lbl = QtGui.QLabel(parent = self.parent)
+            self._idx_lbl = QtWidgets.QLabel(parent=self.parent)
             self._idx_lbl.setAlignment(QtCore.Qt.AlignRight)
             self._idx_lbl.setText('Index:')
 
-            self._idx_val = QtGui.QLabel(parent = self.parent)
+            self._idx_val = QtWidgets.QLabel(parent=self.parent)
             self._idx_val.setAlignment(QtCore.Qt.AlignLeft)
             self._idx_val.setText('0, 0')
 
-            self._min_slider = QtGui.QSlider(QtCore.Qt.Vertical, parent = self.parent)
-            self._min_slider.setTickPosition(QtGui.QSlider.TicksLeft)
+            self._min_slider = QtWidgets.QSlider(QtCore.Qt.Vertical, parent=self.parent)
+            self._min_slider.setTickPosition(QtWidgets.QSlider.TicksLeft)
             self._min_slider.setRange(0, int(slider_max))
             self._min_slider.setTickInterval(slider_interval)
             self._min_slider.setValue(0)
             self._min_slider.setTracking(False)
             self._min_slider.setFocusPolicy(QtCore.Qt.NoFocus)
 
-            self._max_slider = QtGui.QSlider(QtCore.Qt.Vertical, parent = self.parent)
-            self._max_slider.setTickPosition(QtGui.QSlider.TicksLeft)
+            self._max_slider = QtWidgets.QSlider(QtCore.Qt.Vertical, parent=self.parent)
+            self._max_slider.setTickPosition(QtWidgets.QSlider.TicksLeft)
             self._max_slider.setRange(0, int(slider_max))
             self._max_slider.setTickInterval(slider_interval)
             self._max_slider.setValue(int(slider_max))
             self._max_slider.setTracking(False)
             self._max_slider.setFocusPolicy(QtCore.Qt.NoFocus)
 
-            self._idx_slider = QtGui.QSlider(QtCore.Qt.Horizontal, parent = self.parent)
-            self._idx_slider.setTickPosition(QtGui.QSlider.TicksBelow)
+            self._idx_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, parent=self.parent)
+            self._idx_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
             self._idx_slider.setRange(0, 0)
             self._idx_slider.setTickInterval(1)
             self._idx_slider.setValue(0)
             self._idx_slider.setTracking(False)
             self._idx_slider.setFocusPolicy(QtCore.Qt.NoFocus)
 
-            self.connect(self._min_slider, QtCore.SIGNAL("valueChanged(int)"), lambda value: self.min_changed(value))
-            self.connect(self._max_slider, QtCore.SIGNAL("valueChanged(int)"), lambda value: self.max_changed(value))
-            self.connect(self._idx_slider, QtCore.SIGNAL("valueChanged(int)"), lambda value: self.idx_changed(value))
+            self._min_slider.valueChanged.connect(lambda value: self.min_changed(value))
+            self._max_slider.valueChanged.connect(lambda value: self.max_changed(value))
+            self._idx_slider.valueChanged.connect(lambda value: self.idx_changed(value))
 
-            self.connect(self._min_slider, QtCore.SIGNAL("sliderMoved(int)"),
-                         lambda value: self._min_lbl.setText('{:.4g}'.format(self.zmin + value*(self.zmax - self.zmin)/slider_max)))
-            self.connect(self._max_slider, QtCore.SIGNAL("sliderMoved(int)"),
-                         lambda value: self._max_lbl.setText('{:.4g}'.format(self.zmin + value*(self.zmax - self.zmin)/slider_max)))
-            self.connect(self._idx_slider, QtCore.SIGNAL("sliderMoved(int)"),
-                         lambda value: self._idx_val.setText('%i, %i' % (value % self.data_width, (value//self.data_width) % self.data_height)))
+            self._min_slider.sliderMoved.connect(lambda value: self._min_lbl.setText(
+                '{:.4g}'.format(self.zmin + value*(self.zmax - self.zmin)/slider_max)))
+            self._max_slider.sliderMoved.connect(lambda value: self._max_lbl.setText(
+                '{:.4g}'.format(self.zmin + value*(self.zmax - self.zmin)/slider_max)))
+            self._idx_slider.sliderMoved.connect(lambda value: self._idx_val.setText(
+                '%i, %i'%(value%self.data_width, (value//self.data_width)%self.data_height)))
 
-            glayout = QtGui.QGridLayout()
+            glayout = QtWidgets.QGridLayout()
             glayout.addWidget(self, 0, 0, 3, 2)
             glayout.addWidget(self._min_lbl, 2, 2, 1, 2)
             glayout.addWidget(self._max_lbl, 0, 2, 1, 2)
@@ -192,19 +191,19 @@ class Mpl3DPlot(FigureCanvas):
 
     def idx_changed(self, value):
         self.plot3Ddata()
-        i = value % self.data_width if self.data_width > 0 else 0
-        j = (value//self.data_width) % self.data_height if (self.data_width > 0) and (self.data_height > 0) else 0
-        self._idx_val.setText('%i, %i' % (i, j))
+        i = value%self.data_width if self.data_width > 0 else 0
+        j = (value//self.data_width)%self.data_height if (self.data_width > 0) and (self.data_height > 0) else 0
+        self._idx_val.setText('%i, %i'%(i, j))
 
     def clearPlot(self):
         self._axes.clear()
         self._axes.set_axis_off()
 
         if hasattr(self, '_curve'):
-            del(self._curve)
+            del (self._curve)
 
         if hasattr(self, '_im'):
-            del(self._im)
+            del (self._im)
         self._im = None
 
         self._fig.canvas.draw()
@@ -230,7 +229,7 @@ class Mpl3DPlot(FigureCanvas):
         self._idx_slider.setEnabled(False)
         self._idx_slider.setPageStep(10)
 
-        self.emit(QtCore.SIGNAL("dataChanged()"))
+        self.dataChanged.emit()
 
     @property
     def data_is_complex(self):
@@ -241,14 +240,14 @@ class Mpl3DPlot(FigureCanvas):
         return self._switch_fft
 
     @switch_fft.setter
-    def switch_fft(self,  value):
+    def switch_fft(self, value):
         if self.data is not None and (self._switch_fft != bool(value)):
             if self.data_is_complex:
                 self._data = np.fft.ifft2(np.fft.ifftshift(self._data)).real
                 self._units_x = self._units_x.split("/")[1]
             else:
                 self._data = np.fft.fftshift(np.fft.fft2(self._data))
-                self._units_x = "1/%s" % (self._units_x)
+                self._units_x = "1/%s"%(self._units_x)
 
             self._scale_x = 1.0/self.size_x
             self._scale_y = 1.0/self.size_y
@@ -256,7 +255,7 @@ class Mpl3DPlot(FigureCanvas):
         self._switch_fft = bool(value)
 
         self.plot3Ddata()
-        self.emit(QtCore.SIGNAL("dataChanged()"))
+        self.dataChanged.emit()
 
     @property
     def valid_source(self):
@@ -268,7 +267,7 @@ class Mpl3DPlot(FigureCanvas):
 
     @property
     def data_is_fft(self):
-        return self.data is not None and (self.switch_fft != (self.dm3.imagetype in (3,  5, 13)))
+        return self.data is not None and (self.switch_fft != (self.dm3.imagetype in (3, 5, 13)))
 
     @property
     def data_is_spectra(self):
@@ -293,7 +292,7 @@ class Mpl3DPlot(FigureCanvas):
                 idx = self.index
                 data = self.data
                 for n in self.data.shape[:-1]:
-                    data = data[idx % n]
+                    data = data[idx%n]
                     idx = idx//n
 
                 return data
@@ -307,7 +306,7 @@ class Mpl3DPlot(FigureCanvas):
             shape = self.data.shape[:-1]
             index = []
             for n in shape:
-                index += [idx % n]
+                index += [idx%n]
                 idx = idx//n
 
             return np.array(index)
@@ -320,7 +319,7 @@ class Mpl3DPlot(FigureCanvas):
             return None
         elif self._data.dtype in (np.complex64, np.complex128):
             if self._fdata is None:
-                self._fdata = np.log(np.abs(self._data)) #np.angle(self._data,  deg=True)
+                self._fdata = np.log(np.abs(self._data))  # np.angle(self._data,  deg=True)
             return self._fdata
         else:
             return self._data
@@ -506,18 +505,18 @@ class Mpl3DPlot(FigureCanvas):
 
     @property
     def dm3(self):
-         return self._dm3
+        return self._dm3
 
     @property
     def scale_pos(self):
-         return self._scale_pos
+        return self._scale_pos
 
     @scale_pos.setter
     def scale_pos(self, value):
         self._scale_pos = value
         self.plot3Ddata()
 
-    def cmap_name(self,  vmin = None,  vmax = None):
+    def cmap_name(self, vmin=None, vmax=None):
         if vmin is None:
             vmin = self._min_slider.value()
         if vmax is None:
@@ -529,11 +528,11 @@ class Mpl3DPlot(FigureCanvas):
             return plt.get_cmap(self._cmap + '_r')
 
     @property
-    def cmap(self,):
+    def cmap(self, ):
         return self.cmap_name()
 
     @cmap.setter
-    def cmap(self,  value):
+    def cmap(self, value):
         self._cmap = value
         self.updateColorMap()
 
@@ -542,7 +541,7 @@ class Mpl3DPlot(FigureCanvas):
         return self._fname
 
     @fname.setter
-    def fname(self,  value):
+    def fname(self, value):
         self.clearPlot()
         if os.path.exists(value):
             self._fname = value
@@ -553,7 +552,7 @@ class Mpl3DPlot(FigureCanvas):
         return self._idx_slider.value()
 
     @index.setter
-    def index(self,  value):
+    def index(self, value):
         if 0 <= int(value) < self.no_spectra:
             self.clearPlot()
             self._idx_slider.setValue(value)
@@ -598,11 +597,11 @@ class Mpl3DPlot(FigureCanvas):
 
             self.plot3Ddata()
 
-            self.emit(QtCore.SIGNAL("dataChanged()"))
+            self.dataChanged.emit()
         else:
             self.clearPlot()
 
-    def writeFile(self, fname, zoom=1.0,  base_dpi=400):
+    def writeFile(self, fname, zoom=1.0, base_dpi=400):
         if self.valid_source and fname is not None:
             dpi = base_dpi*zoom
 
@@ -616,7 +615,8 @@ class Mpl3DPlot(FigureCanvas):
             cmap = self.cmap
             scale = self.data_width*self.scale_x
 
-            save_image(fname, self.data, size=size, dpi=dpi, cmap=cmap, scale_pos=self.scale_pos, zrange=(vmin, vmax), scale=scale, units=self.units_x)
+            save_image(fname, self.data, size=size, dpi=dpi, cmap=cmap, scale_pos=self.scale_pos, zrange=(vmin, vmax),
+                       scale=scale, units=self.units_x)
 
     def listFiles(self):
         if os.path.exists(self.fname):
@@ -648,33 +648,34 @@ class Mpl3DPlot(FigureCanvas):
 
     def plot3Ddata(self):
         if self.dm3 is not None:
-            if self.data_is_spectra: # The file contains a 1D spectrum or a 3D spectral image
+            if self.data_is_spectra:  # The file contains a 1D spectrum or a 3D spectral image
                 self._axes.clear()
                 self._axes.set_aspect('auto')
                 self._axes.set_axis_on()
                 self._axes.set_position([0.17, 0.1, 0.78, 0.85])
                 self._axes.grid(True)
 
-                if self.data_dim ==3:
+                if self.data_dim == 3:
                     (x_idx, y_idx) = self.index_array
                     (xo, xs, xu) = (self.origin_x, self.scale_x, self.units_x)
                     (yo, ys, yu) = (self.origin_y, self.scale_y, self.units_y)
-                    self._axes.set_title('X = %.1f %s, Y = %.1f %s' % ((x_idx - xo)*xs, xu, (y_idx - yo)*ys, yu))
+                    self._axes.set_title('X = %.1f %s, Y = %.1f %s'%((x_idx - xo)*xs, xu, (y_idx - yo)*ys, yu))
                     self._axes.set_xlabel(self.units_z)
-                    self._curve,  = self._axes.plot(self.range_z, self.spectrum)
+                    self._curve, = self._axes.plot(self.range_z, self.spectrum)
                 else:
                     self._axes.set_xlabel(self.units_x)
-                    self._curve,  = self._axes.plot(self.range_x, self.spectrum)
+                    self._curve, = self._axes.plot(self.range_x, self.spectrum)
 
                 self._axes.set_ylabel(self.dm3.sptunits)
                 self._fig.canvas.draw()
-            else: # It is (should be) a 2D image
+            else:  # It is (should be) a 2D image
                 self._axes.clear()
 
                 # Interpolation can be 'nearest', 'bilinear' or 'bicubic'
                 self._im = self._axes.imshow(self.data, interpolation='nearest', cmap=plt.get_cmap(self._cmap),
                                              vmin=self.zmin, vmax=self.zmax,
-                                             extent=(self.range_x[0], self.range_x[-1], self.range_y[0], self.range_y[-1]))
+                                             extent=(
+                                                 self.range_x[0], self.range_x[-1], self.range_y[0], self.range_y[-1]))
 
                 if 0 < self._scale_pos <= 10:
                     scale_units = self.units_x
@@ -698,7 +699,8 @@ class Mpl3DPlot(FigureCanvas):
                         scale_conv = 1.0
                         scale_value = 1
 
-                    scalebar = AnchoredSizeBar(self._axes.transData, scale_value/scale_conv, '%i %s' % (scale_value, scale_units),
+                    scalebar = AnchoredSizeBar(self._axes.transData, scale_value/scale_conv,
+                                               '%i %s'%(scale_value, scale_units),
                                                loc=self._scale_pos, color='black', frameon=True, label_top=True,
                                                size_vertical=scale_value/scale_conv/10.0, pad=0.2, borderpad=0.5)
 
@@ -707,8 +709,8 @@ class Mpl3DPlot(FigureCanvas):
             # Update the colormap
             self.updateColorMap()
 
-    def updateColorMap(self, min_value = None, max_value = None):
-        if (self._im is not None) and (type(self._im) is AxesImage):# and (self.data_height > 1):
+    def updateColorMap(self, min_value=None, max_value=None):
+        if (self._im is not None) and (type(self._im) is AxesImage):  # and (self.data_height > 1):
             if min_value is None:
                 min_value = self._min_slider.value()
             if max_value is None:
@@ -749,18 +751,16 @@ class Mpl3DPlot(FigureCanvas):
             yindex = np.argmin(np.abs(self.range_y - event.ydata))
 
             # This is a custom signal to warn that the position changed
-            if self.data_dim == 1: # 1D spectrum
-                self.emit(QtCore.SIGNAL("coordsChanged"), (event.xdata, event.ydata))
-            elif self.data_dim == 2: # 2D image
-                self.emit(QtCore.SIGNAL("coordsChanged"), (event.xdata, event.ydata, self.data[xindex, yindex]))
-            else: # 3D spectrum image
-                self.emit(QtCore.SIGNAL("coordsChanged"), (event.xdata, event.ydata, self.data[xindex, yindex, 0]))
+            if self.data_dim == 1:  # 1D spectrum
+                self.coordsChanged.emit((event.xdata, event.ydata))
+            elif self.data_dim == 2:  # 2D image
+                self.coordsChanged.emit((event.xdata, event.ydata, self.data[xindex, yindex]))
+            else:  # 3D spectrum image
+                self.coordsChanged.emit((event.xdata, event.ydata, self.data[xindex, yindex, 0]))
         else:
             # This is a custom signal to warn that the position changed
-            self.emit(QtCore.SIGNAL("coordsChanged"), None)
+            self.coordsChanged.emit(())
 
     def onLeave(self, event):
         # This is a custom signal to warn that the position changed
-        self.emit(QtCore.SIGNAL("coordsChanged"), None)
-
-
+        self.coordsChanged.emit(())

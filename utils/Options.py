@@ -23,7 +23,7 @@
 #  This program is based on the example "embedding_in_qt4.py" available
 #  at http://matplotlib.org/examples/user_interfaces/embedding_in_qt4.html
 
-from PyQt4 import uic,  QtCore, QtGui
+from PyQt5 import uic,  QtCore, QtGui, QtWidgets
 import os
 
 ColorMaps = ('gray', 'hot', 'gist_earth', 'terrain', 'ocean', 'brg', 'jet', 'rainbow', 'hsv')
@@ -41,13 +41,13 @@ class Options(object):
     def __init__(self):
         #variables and default values
         self.optlist = ['workDirectory', 'timeInterval', 'zoom', 'colorMap', 'scalePos']
-        self.dfltlist = [unicode(QtCore.QDir.currentPath()), 0.0, 1.0, 'gray', 3]
+        self.dfltlist = [QtCore.QDir.currentPath().encode('utf-8'), 0.0, 1.0, 'gray', 3]
         self.reset()
 
     def reset(self):
         for opt, dflt in zip(self.optlist, self.dfltlist): setattr(self, opt, dflt)
 
-class OptionsDlg(QtGui.QDialog):
+class OptionsDlg(QtWidgets.QDialog):
     '''Dialog containing options for DM3Viewer. The options are members of this object.'''
     def __init__(self, parent = None):
         super(OptionsDlg, self).__init__(parent)
@@ -71,7 +71,7 @@ class OptionsDlg(QtGui.QDialog):
         #create colormaps
         from numpy import linspace, vstack
         import matplotlib.pyplot as plt
-        from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
         fig, axes = plt.subplots(nrows = len(ColorMaps))
         fig.subplots_adjust(top = 0.99, bottom = 0.01, left = 0.2, right = 0.99)
@@ -115,7 +115,7 @@ class OptionsDlg(QtGui.QDialog):
         '''returns an options object filled with values from the dialog'''
         options = Options()
         #GENERAL
-        options.workDirectory = unicode(self.workDirectoryLE.text())
+        options.workDirectory = self.workDirectoryLE.text().encode('utf-8')
         options.timeInterval = float(self.timeIntLE.text())
         #PLOT
         options.zoom = self.getZoom(self.zoomHS.value())
