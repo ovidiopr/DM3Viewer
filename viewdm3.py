@@ -201,12 +201,12 @@ class DM3Viewer(QtWidgets.QMainWindow):
             self.setTitle()
 
     def fileClose(self):
-        result = QtGui.QMessageBox.question(self, "Close '%s'"%(os.path.basename(self.plot.fname)),
-                                            "Are you sure that you want to close the image '%s'?"%(
-                                                os.path.basename(self.plot.fname)),
-                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        result = QtWidgets.QMessageBox.question(self, "Close '%s'"%(os.path.basename(self.plot.fname)),
+                                                "Are you sure that you want to close the image '%s'?"%(
+                                                    os.path.basename(self.plot.fname)),
+                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-        if (result == QtGui.QMessageBox.Yes):
+        if (result == QtWidgets.QMessageBox.Yes):
             self.plot.clearPlot()
             self.setTitle()
 
@@ -216,7 +216,7 @@ class DM3Viewer(QtWidgets.QMainWindow):
         else:
             dir = self.options.workDirectory
 
-        fname = QtGui.QFileDialog.getSaveFileName(self, "Select File Name", dir, "%s files (*.%s)"%(name, ext))
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dir, "%s files (*.%s)"%(name, ext))
         if fname:
             self.options.workDirectory = os.path.dirname(fname)  # update the working directory
             self.settings.setValue("Options/workDirectory",
@@ -229,7 +229,7 @@ class DM3Viewer(QtWidgets.QMainWindow):
         else:
             dir = self.options.workDirectory
 
-        fname = QtGui.QFileDialog.getSaveFileName(self, "Select File Name", dir, "Data Files (*.dat)")
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dir, "Data Files (*.dat)")
         if fname:
             self.options.workDirectory = os.path.dirname(fname)  # update the working directory
             self.settings.setValue("Options/workDirectory",
@@ -263,11 +263,11 @@ class DM3Viewer(QtWidgets.QMainWindow):
                        np.array((self.plot.getDataWidth(), self.plot.getDataHeight())), fmt='%.3f')
 
     def fileQuit(self):
-        # result = QtGui.QMessageBox.question(self, "Quit %s" % (version.__name__),
-        #                                    "Are you sure that you want to quit %s?" % (version.__name__),
-        #                                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        # result = QtWidgets.QMessageBox.question(self, "Quit %s" % (version.__name__),
+        #                                        "Are you sure that you want to quit %s?" % (version.__name__),
+        #                                        QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-        # if (result == QtGui.QMessageBox.Yes):
+        # if (result == QtWidgets.QMessageBox.Yes):
         self.close()
 
     def onOptions(self):
