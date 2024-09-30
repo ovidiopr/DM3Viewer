@@ -45,7 +45,9 @@ class DM3Viewer(QtWidgets.QMainWindow):
 
         self.setWindowTitle(version.__name__)
 
+        self.options = None
         self.optionsDlg = None
+        self.loadFileDlg = None
 
         # This  gets the settings from wherever they are stored (the storage place is platform dependent)
         self.settings = QtCore.QSettings()
@@ -142,11 +144,11 @@ class DM3Viewer(QtWidgets.QMainWindow):
         if coords is None:
             self.statusbar.showMessage("")
         elif len(coords) == 1:
-            self.statusbar.showMessage("x = %.5g"%(coords))
+            self.statusbar.showMessage("x = %.5g" % coords)
         elif len(coords) == 2:
-            self.statusbar.showMessage("x = %.5g, y = %.5g"%(coords))
+            self.statusbar.showMessage("x = %.5g, y = %.5g" % coords)
         elif len(coords) == 3:
-            self.statusbar.showMessage("x = %.5g, y = %.5g, z = %.5g"%(coords))
+            self.statusbar.showMessage("x = %.5g, y = %.5g, z = %.5g" % coords)
         else:
             self.statusbar.showMessage("")
 
@@ -166,7 +168,7 @@ class DM3Viewer(QtWidgets.QMainWindow):
                 setattr(self.options, opt, self.settings.value('Options/' + opt, QtCore.QVariant(dflt)))
             else:
                 print(type(dflt))
-                raise ValueError('Unsupported type in option "%s"'%dflt)
+                raise ValueError('Unsupported type in option "%s"' % dflt)
 
     def createLoadDlg(self, title, filters, selectedFilter, activeDir):
         # General Load Dialog
@@ -182,7 +184,7 @@ class DM3Viewer(QtWidgets.QMainWindow):
 
     def createLoadFileDlg(self):
         # Load DM3 File Dialog (it is never closed, just hidden)
-        title = "%s - Load DM3 File"%QtWidgets.QApplication.applicationName()
+        title = "%s - Load DM3 File" % QtWidgets.QApplication.applicationName()
         filters = ["DM3 Files (*.dm3)", "All Files (*.*)"]
         selectedFilter = self.settings.value("LoadFileFilter", QtCore.QVariant(filters[0]))
         activeDir = self.options.workDirectory
@@ -201,22 +203,23 @@ class DM3Viewer(QtWidgets.QMainWindow):
             self.setTitle()
 
     def fileClose(self):
-        result = QtWidgets.QMessageBox.question(self, "Close '%s'"%(os.path.basename(self.plot.fname)),
-                                                "Are you sure that you want to close the image '%s'?"%(
-                                                    os.path.basename(self.plot.fname)),
+        result = QtWidgets.QMessageBox.question(self, "Close '%s'" % (os.path.basename(self.plot.fname)),
+                                                "Are you sure that you want to close the image '%s'?" %
+                                                (os.path.basename(self.plot.fname)),
                                                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
-        if (result == QtWidgets.QMessageBox.Yes):
+        if result == QtWidgets.QMessageBox.Yes:
             self.plot.clearPlot()
             self.setTitle()
 
     def fileSaveAs(self, name='PNG', ext='png'):
         if os.path.exists(self.plot.fname):
-            dir = "%s.%s"%(os.path.splitext(self.plot.fname)[0], ext)
+            dirname = "%s.%s" % (os.path.splitext(self.plot.fname)[0], ext)
         else:
-            dir = self.options.workDirectory
+            dirname = self.options.workDirectory
 
-        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dir, "%s files (*.%s)"%(name, ext))
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dirname,
+                                                      "%s files (*.%s)" % (name, ext))
         if fname:
             self.options.workDirectory = os.path.dirname(fname)  # update the working directory
             self.settings.setValue("Options/workDirectory",
@@ -225,11 +228,11 @@ class DM3Viewer(QtWidgets.QMainWindow):
 
     def fileExportData(self):
         if os.path.exists(self.plot.fname):
-            dir = "%s.%s"%(os.path.splitext(self.plot.fname)[0], 'dat')
+            dirname = "%s.%s" % (os.path.splitext(self.plot.fname)[0], 'dat')
         else:
-            dir = self.options.workDirectory
+            dirname = self.options.workDirectory
 
-        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dir, "Data Files (*.dat)")
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dirname, "Data Files (*.dat)")
         if fname:
             self.options.workDirectory = os.path.dirname(fname)  # update the working directory
             self.settings.setValue("Options/workDirectory",
@@ -259,7 +262,7 @@ class DM3Viewer(QtWidgets.QMainWindow):
             np.savetxt(fname, data.astype(int), fmt='%i')
 
             # Save scale info
-            np.savetxt("%s.info"%(os.path.splitext(fname)[0]),
+            np.savetxt("%s.info" % (os.path.splitext(fname)[0]),
                        np.array((self.plot.getDataWidth(), self.plot.getDataHeight())), fmt='%.3f')
 
     def fileQuit(self):
@@ -272,7 +275,8 @@ class DM3Viewer(QtWidgets.QMainWindow):
 
     def onOptions(self):
         '''Shows the options dialog and saves any changes if accepted'''
-        if self.optionsDlg is None: self.optionsDlg = OptionsDlg(self)  # create the dialog if not already done
+        if self.optionsDlg is None:
+            self.optionsDlg = OptionsDlg(self)  # create the dialog if not already done
 
         # Make sure that the Dlg is in sync with the options
         self.optionsDlg.setOptions(self.options)
@@ -309,16 +313,16 @@ class DM3Viewer(QtWidgets.QMainWindow):
         infoStr = ""
         for i, key in enumerate(infoKeys):
             if key in info:
-                infoStr += "<p><b>%s</b>: %s%s</p>"%(infoDesc[i], info[key], infoSuff[i])
+                infoStr += "<p><b>%s</b>: %s%s</p>" % (infoDesc[i], info[key], infoSuff[i])
 
         shape = self.plot.data.shape
-        shape_str = '%i'%shape[0]
+        shape_str = '%i' % shape[0]
         (origin, scale, units) = self.plot.dm3.axisunits(0)
-        size_str = '%.4g %s'%(shape[0]*scale, units)
+        size_str = '%.4g %s' % (shape[0]*scale, units)
         for i in range(1, len(shape)):
-            shape_str = '%sx%i'%(shape_str, shape[i])
+            shape_str = '%sx%i' % (shape_str, shape[i])
             (origin, scale, units) = self.plot.dm3.axisunits(i)
-            size_str = '%s x %.4g %s'%(size_str, shape[i]*scale, units)
+            size_str = '%s x %.4g %s' % (size_str, shape[i]*scale, units)
         (zo, zf) = self.plot.dm3.cuts
 
         QtWidgets.QMessageBox.information(self, "Image Info...",
@@ -327,8 +331,8 @@ class DM3Viewer(QtWidgets.QMainWindow):
                                           <p><b>Dimensions</b>: %s</p>
                                           <p><b>Scale</b>: %.3g %s/px</p>
                                           <p><b>Contrast Limits</b>: %i - %i</p>
-                                          %s"""%(os.path.basename(self.plot.fname), shape_str,
-                                             size_str, scale, units, zo, zf, infoStr))
+                                          %s""" % (os.path.basename(self.plot.fname), shape_str,
+                                                   size_str, scale, units, zo, zf, infoStr))
 
     def switchFFT(self):
         self.plot.switch_fft = self.action_FFT.isChecked()
@@ -338,22 +342,22 @@ class DM3Viewer(QtWidgets.QMainWindow):
         from numpy import __version__ as numpy_version
         from matplotlib import __version__ as mpl_version
 
-        QtWidgets.QMessageBox.about(self, "About %s"%(version.__name__),
+        QtWidgets.QMessageBox.about(self, "About %s" % version.__name__,
                                     """<b>%s</b> v%s
                                     <p>Copyright &copy; 2018 Ovidio Y. Pe&ntilde;a Rodr&iacute;guez <ovidio.pena [AT] upm.es></p>
                                     <p></p>
                                     <p>Home page: <a href='%s'>%s</a></p>
                                     <p></p>
                                     <p>Python %s - Qt %s - PyQt %s on %s</p>
-                                    <p>Numpy %s - Scipy %s - Matplotlib %s</p>"""%(version.__name__,
-                                                                                   version.__version__, version.__url__,
-                                                                                   version.__url__,
-                                                                                   platform.python_version(),
-                                                                                   QtCore.QT_VERSION_STR,
-                                                                                   QtCore.PYQT_VERSION_STR,
-                                                                                   platform.system(),
-                                                                                   numpy_version, scipy_version,
-                                                                                   mpl_version))
+                                    <p>Numpy %s - Scipy %s - Matplotlib %s</p>""" % (version.__name__,
+                                                                                     version.__version__, version.__url__,
+                                                                                     version.__url__,
+                                                                                     platform.python_version(),
+                                                                                     QtCore.QT_VERSION_STR,
+                                                                                     QtCore.PYQT_VERSION_STR,
+                                                                                     platform.system(),
+                                                                                     numpy_version, scipy_version,
+                                                                                     mpl_version))
 
     def closeEvent(self, event):
         '''This event handler receives widget close events'''
@@ -364,7 +368,8 @@ class DM3Viewer(QtWidgets.QMainWindow):
         # Store the options as settings
         for opt in self.options.optlist:
             val = getattr(self.options, opt)
-            if isinstance(val, bytes): val = val.decode('utf-8')  # convert python strings to QStrings
+            if isinstance(val, bytes):
+                val = val.decode('utf-8')  # convert python strings to QStrings
             self.settings.setValue("Options/" + opt, QtCore.QVariant(val))
 
         # Save main window state before closing

@@ -109,6 +109,19 @@ class Mpl3DPlot(FigureCanvas):
     coordsChanged = QtCore.pyqtSignal(tuple)
 
     def __init__(self, parent=None, width=8.0, height=6.0, dpi=150, toolbar=True, cmap='gray', scale_pos=3):
+        self._fname = None
+        self._dm3 = None
+        self._data = None
+        self._fdata = None
+        self._switch_fft = None
+
+        self._curve = None
+        self._im = None
+
+        self._units_x = None
+        self._scale_x = None
+        self._scale_y = None
+
         self._fig = Figure(figsize=(width, height), dpi=dpi)
         FigureCanvas.__init__(self, self._fig)
         self.setParent(parent)
@@ -261,7 +274,7 @@ class Mpl3DPlot(FigureCanvas):
                 self._units_x = self._units_x.split("/")[1]
             else:
                 self._data = np.fft.fftshift(np.fft.fft2(self._data))
-                self._units_x = "1/%s"%(self._units_x)
+                self._units_x = "1/%s" % (self._units_x)
 
             self._scale_x = 1.0/self.size_x
             self._scale_y = 1.0/self.size_y
@@ -285,7 +298,7 @@ class Mpl3DPlot(FigureCanvas):
 
     @property
     def data_is_spectra(self):
-        return self.data is not None and (self.dm3.imagetype == 2) and (self.data_dim in (1, 3))
+        return self.data is not None and ((self.data_dim == 1) or (self.dm3.imagetype == 2) and (self.data_dim in (1, 3)))
 
     @property
     def no_spectra(self):
