@@ -218,9 +218,10 @@ class DM3Viewer(QtWidgets.QMainWindow):
         else:
             dirname = self.options.workDirectory
 
-        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dirname,
-                                                      "%s files (*.%s)" % (name, ext))
+        fname, ftype = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dirname,
+                                                        "%s files (*.%s)" % (name, ext))
         if fname:
+            print(fname)
             self.options.workDirectory = os.path.dirname(fname)  # update the working directory
             self.settings.setValue("Options/workDirectory",
                                    QtCore.QVariant(self.options.workDirectory))  # save the new working directory
@@ -232,7 +233,8 @@ class DM3Viewer(QtWidgets.QMainWindow):
         else:
             dirname = self.options.workDirectory
 
-        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dirname, "Data Files (*.dat)")
+        fname, ftype = QtWidgets.QFileDialog.getSaveFileName(self, "Select File Name", dirname,
+                                                            "Data Files (*.dat)")
         if fname:
             self.options.workDirectory = os.path.dirname(fname)  # update the working directory
             self.settings.setValue("Options/workDirectory",
@@ -240,7 +242,7 @@ class DM3Viewer(QtWidgets.QMainWindow):
 
             import numpy as np
 
-            data = self.plot.getData().copy()
+            data = self.plot.data.copy()
 
             if self.options.zoom != 1.0:  # Resize only if necessary
                 from scipy.ndimage import zoom
@@ -263,7 +265,7 @@ class DM3Viewer(QtWidgets.QMainWindow):
 
             # Save scale info
             np.savetxt("%s.info" % (os.path.splitext(fname)[0]),
-                       np.array((self.plot.getDataWidth(), self.plot.getDataHeight())), fmt='%.3f')
+                       np.array((self.plot.data_width, self.plot.data_height)), fmt='%.3f')
 
     def fileQuit(self):
         # result = QtWidgets.QMessageBox.question(self, "Quit %s" % (version.__name__),
